@@ -14,7 +14,8 @@ func Connect() {
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 
 	if err != nil {
-		panic("Database connection failed")
+		println("Database not connected, running without DB")
+		return
 	}
 
 	DB = db
