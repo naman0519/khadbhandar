@@ -8,21 +8,15 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// ================== GET ALL PRODUCTS (HOME PAGE) ==================
+// ================== GET ALL PRODUCTS ==================
 
 func GetProducts(c *gin.Context) {
 	var products []models.Product
 
-	//  SAFE DB CHECK
-	if config.DB != nil {
-		config.DB.Find(&products)
-	} else {
-		fmt.Println("DB not connected, sending empty products")
-	}
+	config.DB.Find(&products)
 
 	fmt.Println("Products:", products)
 
-	// stock map create
 	stockMap := make(map[string]int)
 
 	for _, p := range products {
@@ -35,29 +29,22 @@ func GetProducts(c *gin.Context) {
 	})
 }
 
-// ================== ADMIN PRODUCTS PAGE ==================
+// ================== ADMIN PRODUCTS ==================
 
 func AdminProducts(c *gin.Context) {
 
 	var products []models.Product
 
-	// ✅ SAFE DB CHECK
-	if config.DB != nil {
-		config.DB.Find(&products)
-	}
+	config.DB.Find(&products)
 
 	c.HTML(200, "admin_products.html", gin.H{
 		"products": products,
 	})
 }
 
-func AddProduct(c *gin.Context) {
+// ================== ADD PRODUCT ==================
 
-	//  DB नहीं है → block कर देंगे
-	if config.DB == nil {
-		c.String(500, "Database not connected")
-		return
-	}
+func AddProduct(c *gin.Context) {
 
 	name := c.PostForm("name")
 	category := c.PostForm("category")

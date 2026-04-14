@@ -1,21 +1,22 @@
 package config
 
 import (
+	"os"
+
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
-var DB *gorm.DB // ❗ yahan change
+var DB *gorm.DB
 
 func Connect() {
 
-	dsn := "host=localhost user=postgres password=root dbname=Khadbhandar port=5432 sslmode=disable"
+	dsn := os.Getenv("DATABASE_URL")
 
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 
 	if err != nil {
-		println("Database not connected, running without DB")
-		return
+		panic("Database connection failed")
 	}
 
 	DB = db

@@ -16,13 +16,9 @@ func main() {
 
 	fmt.Println("SERVER STARTED")
 
-	//  DB connect disabled (for deployment)
-	// config.Connect()
+	config.Connect()
 
-	//  Auto migrate safe banaya
-	if config.DB != nil {
-		config.DB.AutoMigrate(&models.Product{}, &models.Order{})
-	}
+	config.DB.AutoMigrate(&models.Product{}, &models.Order{})
 
 	// gin init
 	r := gin.Default()
