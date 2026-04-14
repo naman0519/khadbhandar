@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	"khadbhandar/config"
-	database "khadbhandar/config"
 	"khadbhandar/models"
 	"khadbhandar/routes"
 
@@ -15,23 +14,25 @@ import (
 
 func main() {
 
-	fmt.Println(" SERVER STARTED")
+	fmt.Println("SERVER STARTED")
 
-	// DB connect
-	database.Connect()
+	//  DB connect disabled (for deployment)
+	// config.Connect()
 
-	// migrate tables
-	config.DB.AutoMigrate(&models.Product{}, &models.Order{})
+	//  Auto migrate safe banaya
+	if config.DB != nil {
+		config.DB.AutoMigrate(&models.Product{}, &models.Order{})
+	}
 
 	// gin init
 	r := gin.Default()
 
-	//  SESSION SETUP (IMPORTANT)
+	// SESSION SETUP
 	store := cookie.NewStore([]byte("secret"))
 
 	store.Options(sessions.Options{
 		Path:     "/",
-		MaxAge:   3600, // 1 hour
+		MaxAge:   3600,
 		HttpOnly: true,
 	})
 
@@ -40,11 +41,11 @@ func main() {
 	// static files
 	r.Static("/static", "./static")
 
-	// templates load
+	// templates
 	r.LoadHTMLGlob("./templates/*")
 
-	// routes load
-	fmt.Println(" ROUTES LOADING...")
+	// routes
+	fmt.Println("ROUTES LOADING...")
 	routes.SetupRoutes(r)
 
 	// run server
