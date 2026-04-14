@@ -12,11 +12,17 @@ import (
 
 func GetProducts(c *gin.Context) {
 	var products []models.Product
-	config.DB.Find(&products)
+
+	//  SAFE DB CHECK
+	if config.DB != nil {
+		config.DB.Find(&products)
+	} else {
+		fmt.Println("DB not connected, sending empty products")
+	}
 
 	fmt.Println("Products:", products)
 
-	//  stock map create
+	// stock map create
 	stockMap := make(map[string]int)
 
 	for _, p := range products {
@@ -35,7 +41,10 @@ func AdminProducts(c *gin.Context) {
 
 	var products []models.Product
 
-	config.DB.Find(&products)
+	// ✅ SAFE DB CHECK
+	if config.DB != nil {
+		config.DB.Find(&products)
+	}
 
 	c.HTML(200, "admin_products.html", gin.H{
 		"products": products,
@@ -43,6 +52,12 @@ func AdminProducts(c *gin.Context) {
 }
 
 func AddProduct(c *gin.Context) {
+
+	//  DB नहीं है → block कर देंगे
+	if config.DB == nil {
+		c.String(500, "Database not connected")
+		return
+	}
 
 	name := c.PostForm("name")
 	category := c.PostForm("category")
@@ -64,7 +79,7 @@ func AddProduct(c *gin.Context) {
 	result := config.DB.Create(&product)
 
 	if result.Error != nil {
-		fmt.Println(" DB ERROR:", result.Error)
+		fmt.Println("DB ERROR:", result.Error)
 		c.String(500, "DB error")
 		return
 	}
