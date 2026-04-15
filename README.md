@@ -65,6 +65,6 @@ http://localhost:8080
 
 Naman Gupta
 
-- MCA Graduate
+- Masters of computer science 
 - Backend Developer (Golang)
 - Interested in AI & Data Analysis
