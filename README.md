@@ -60,3 +60,11 @@ go run main.go
 http://localhost:8080
 
 
+
+ 🙋‍♂️ Author
+
+Naman Gupta
+
+- MCA Graduate
+- Backend Developer (Golang)
+- Interested in AI & Data Analysis
