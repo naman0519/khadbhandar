@@ -38,11 +38,11 @@ func PlaceOrder(c *gin.Context) {
 
 	// 🔥 STEP 2: SAVE ORDER (ONLY IF STOCK OK)
 	order := models.Order{
-		Name:     name,
-		Product:  product,
-		Phone:    phone,
-		Quantity: quantity,
-		Status:   "Pending",
+		UserName:    name,
+		Product:     product,
+		PhoneNumber: phone,
+		Quantity:    quantity,
+		Status:      "Pending",
 	}
 
 	err = config.DB.Create(&order).Error
@@ -130,8 +130,7 @@ func GetUserOrders(c *gin.Context) {
 
 	var orders []models.Order
 
-	config.DB.Where("phone = ?", phone).Find(&orders)
-
+	config.DB.Where("phone_number = ?", phone).Find(&orders)
 	c.HTML(200, "my_orders.html", gin.H{
 		"orders": orders,
 		"phone":  phone,
