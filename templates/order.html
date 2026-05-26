@@ -18,7 +18,9 @@
 
 <h2 class="text-center">Place Your order</h2>
 
-<form id="orderForm" action="/place-order" method="POST">
+<form id="orderForm"
+      action="https://oms-dashboard.onrender.com/order"
+      method="POST">
 
     <!-- Form field -->
 
@@ -30,12 +32,12 @@
 
 <div class="mb-3">
 <label>Farmer Name</label>
-<input type="text" name="name" class="form-control" required>
+<input type="text" id="name" name="name" class="form-control" required>
 </div>
 
 <div class="mb-3">
 <label>Phone</label>
-<input type="tel" name="phone" class="form-control"
+<input type="tel" id="phone" name="phone" class="form-control"
 pattern="[0-9]{10}" maxlength="10"
 oninput="this.value = this.value.replace(/[^0-9]/g, '')"
 placeholder="Enter 10 digit mobile number" required>

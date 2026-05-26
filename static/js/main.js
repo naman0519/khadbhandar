@@ -292,44 +292,87 @@ function toggleProducts() {
 
 // ================= ORDER VALIDATION =================
 
-let form = document.getElementById("orderForm");
-
 if(form){
-  form.addEventListener("submit", function(e){
 
-    let name = document.getElementById("name").value.trim();
-    let phone = document.getElementById("phone").value.trim();
-    let quantity = document.getElementById("quantity").value;
+  form.addEventListener("submit", async function(e){
 
-    //  empty check
+    e.preventDefault();
+
+    let name =
+      document.getElementById("name").value.trim();
+
+    let phone =
+      document.getElementById("phone").value.trim();
+
+    let quantity =
+      document.getElementById("quantity").value;
+
+    let product =
+      document.querySelector('input[name="product"]').value;
+
+    // validation
     if(name === "" || phone === "" || quantity === ""){
       alert("⚠ Fill all fields");
-      e.preventDefault();
       return;
     }
 
-    //  phone check
     if(!/^[0-9]{10}$/.test(phone)){
       alert("📱 Enter valid 10 digit number");
-      e.preventDefault();
       return;
     }
 
-    // quantity check
     if(quantity <= 0){
-      alert(" Quantity must be greater than 0");
-      e.preventDefault();
+      alert("Quantity must be greater than 0");
       return;
     }
 
-    // MAX LIMIT
     if(quantity > 30){
-      alert(" Maximum 30 bags allowed");
-      e.preventDefault();
+      alert("Maximum 30 bags allowed");
       return;
+    }
+
+    try {
+
+      const response = await fetch(
+        "https://oms-dashboard.onrender.com/order",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            name: name,
+            phone: phone,
+            product: product,
+            quantity: parseInt(quantity)
+          })
+        }
+      );
+
+      const data = await response.json();
+
+      if(response.ok){
+
+        alert("Order placed successfully ✅");
+
+        window.location.href = "/";
+
+      } else {
+
+        alert(data.error || "Order failed");
+
+      }
+
+    } catch(err){
+
+      console.error(err);
+
+      alert("Server error");
+
     }
 
   });
+
 }
 
 
