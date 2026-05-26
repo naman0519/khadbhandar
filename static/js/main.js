@@ -553,3 +553,48 @@ function showCropProducts() {
   });
 
 }
+
+
+
+// ================= ORDER SUBMIT =================
+
+const orderForm = document.getElementById("orderForm");
+
+if(orderForm){
+
+  orderForm.addEventListener("submit", async function(e){
+
+    e.preventDefault();
+
+    const formData = new FormData(orderForm);
+
+    try {
+
+      const response = await fetch("https://oms-dashboard.onrender.com/order", {
+        method: "POST",
+        body: formData
+      });
+
+      const data = await response.json();
+
+      if(data.message){
+
+        // SUCCESS PAGE
+        window.location.href = "/success";
+
+      } else {
+
+        alert("Order Failed");
+
+      }
+
+    } catch(err){
+
+      console.log(err);
+      alert("Server Error");
+
+    }
+
+  });
+
+}
