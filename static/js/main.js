@@ -549,7 +549,7 @@ function showCropProducts() {
     } else {
       product.style.display = "none";
     }
-
+    
   });
 
 }
