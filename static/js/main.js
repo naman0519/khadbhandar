@@ -292,6 +292,8 @@ function toggleProducts() {
 
 // ================= ORDER VALIDATION =================
 
+const form = document.getElementById("orderForm");
+
 if(form){
 
   form.addEventListener("submit", async function(e){
@@ -555,45 +557,15 @@ function showCropProducts() {
 }
 
 
+// ================= SEARCH BUTTON =================
 
-// ================= ORDER SUBMIT =================
+const searchBtn = document.getElementById("searchBtn");
 
-const orderForm = document.getElementById("orderForm");
+if(searchBtn){
 
-if(orderForm){
+  searchBtn.addEventListener("click", function(){
 
-  orderForm.addEventListener("submit", async function(e){
-
-    e.preventDefault();
-
-    const formData = new FormData(orderForm);
-
-    try {
-
-      const response = await fetch("https://oms-dashboard.onrender.com/order", {
-        method: "POST",
-        body: formData
-      });
-
-      const data = await response.json();
-
-      if(data.message){
-
-        // SUCCESS PAGE
-        window.location.href = "/success";
-
-      } else {
-
-        alert("Order Failed");
-
-      }
-
-    } catch(err){
-
-      console.log(err);
-      alert("Server Error");
-
-    }
+    applyFilterAndSearch();
 
   });
 
